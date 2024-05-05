@@ -12,6 +12,7 @@ from struct import pack, unpack
 from sys import exit
 from time import sleep
 from offsets import *
+import os
 
 # PPPoE constants
 
@@ -821,11 +822,17 @@ def main():
     parser.add_argument('--fw',
                         choices=[
                             '850', '900', '903', '904', '950', '960', '1000',
-                            '1001', '1050', '1070', '1071', '1100'
+                            '1001', '1050', '1070', '1071', '1100', '1102', '1150'
                         ],
                         default='1100')
-    parser.add_argument('--stage1', default='stage1/stage1.bin')
-    parser.add_argument('--stage2', default='stage2/stage2.bin')
+    
+    if os.name == 'nt':
+        parser.add_argument('--stage1', default='windows/stage1/stage1.bin')
+        parser.add_argument('--stage2', default='windows/stage2/stage2.bin')
+    elif os.name == 'posix':
+        parser.add_argument('--stage1', default='linux/stage1/stage1.bin')
+        parser.add_argument('--stage2', default='linux/stage2/stage2.bin')
+
     args = parser.parse_args()
 
     print('[+] PPPwn - PlayStation 4 PPPoE RCE by theflow')
